@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Day25_AI-Team-Lab_Team3201</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  @page {
+    size: A4 portrait;
+    margin: 8mm 11mm 8mm 11mm;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1e293b;
+    background: #ffffff;
+    font-size: 8.2pt;
+    line-height: 1.32;
+  }
+
+  .page {
+    width: 100%;
+    height: 281mm; /* Exact A4 height minus page margins */
+    max-height: 281mm;
+    overflow: hidden;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 1mm;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  .page-header {
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .header-title-box h1 {
+    font-size: 10.5pt;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .header-title-box .sub {
+    font-size: 7.2pt;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .header-meta {
+    text-align: right;
+    font-size: 7.2pt;
+    color: #334155;
+  }
+
+  .header-meta strong {
+    color: #0f172a;
+  }
+
+  .page-footer {
+    border-top: 1px solid #cbd5e1;
+    padding-top: 3px;
+    margin-top: 3px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 6.8pt;
+    color: #64748b;
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .section-title {
+    font-size: 8.2pt;
+    font-weight: 700;
+    color: #0f172a;
+    background: #f1f5f9;
+    padding: 2.5px 5px;
+    border-left: 3px solid #2563eb;
+    border-radius: 2px;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .badge {
+    font-size: 6.2pt;
+    font-weight: 700;
+    padding: 1px 4.5px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-purple { background: #f3e8ff; color: #6b21a8; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.4pt;
+  }
+
+  th, td {
+    padding: 2.8px 4.5px;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #e2e8f0;
+  }
+
+  th {
+    background: #f8fafc;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 7.1pt;
+  }
+
+  tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  /* Grid boxes */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 4px;
+  }
+
+  .card {
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 4px 6px;
+    background: #ffffff;
+  }
+
+  .card-header {
+    font-weight: 700;
+    font-size: 7.7pt;
+    color: #0f172a;
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .highlight-box {
+    background: #eff6ff;
+    border-left: 2.5px solid #3b82f6;
+    padding: 3.5px 5.5px;
+    border-radius: 2px;
+    font-size: 7.3pt;
+  }
+
+  .alert-box {
+    background: #fef2f2;
+    border-left: 2.5px solid #ef4444;
+    padding: 3.5px 5.5px;
+    border-radius: 2px;
+    font-size: 7.3pt;
+  }
+
+  .success-box {
+    background: #f0fdf4;
+    border-left: 2.5px solid #22c55e;
+    padding: 3.5px 5.5px;
+    border-radius: 2px;
+    font-size: 7.3pt;
+  }
+
+  ul {
+    padding-left: 13px;
+    margin: 1.5px 0;
+  }
+
+  li {
+    margin-bottom: 1px;
+  }
+
+  .code-font {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7pt;
+  }
+
+  p {
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== TRANG 1 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-title-box">
+      <h1>Trang 1 — Stakeholder Map & Chiến Lược</h1>
+      <div class="sub">Track 1 · Day 25 — AI Team Lab | Dự án: ENGENIX (P-059) | Live App: <a href="https://c4-app-059.vercel.app/" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">https://c4-app-059.vercel.app/</a></div>
+    </div>
+    <div class="header-meta">
+      <strong>Nhóm: H3201</strong> (4 thành viên)<br>
+      Trang <strong>1 / 4</strong>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Ma trận 2x2 -->
+    <div>
+      <div class="section-title">
+        <span>1. MA TRẬN STAKEHOLDER MAP (INFLUENCE × INTEREST): 1 CHỦ NHÀ THẦU + 6 KỸ SƯ</span>
+        <span class="badge badge-blue">Cơ cấu B2B Thực tế</span>
+      </div>
+      <div class="grid-2">
+        <div class="card" style="border-top: 2.5px solid #ef4444;">
+          <div class="card-header">
+            <span style="color: #b91c1c;">BLOCKER / CẦN ƯU TIÊN THUYẾT PHỤC</span>
+            <span class="badge badge-amber">Influence Cao × Hoài nghi</span>
+          </div>
+          <p><strong>• Kỹ sư Đỗ Thị Hương (Kỹ sư Bóc tách thâm niên — Sky Garden):</strong> <em>Stance: Nghi ngại / E ngại mất việc</em>. Quen bóc tay 10 năm, sợ AI sai số và làm giảm giá trị nghề nghiệp.</p>
+          <p><strong>• Kỹ sư Trần Quốc Bảo (Kiểm soát chi phí & Thẩm tra — Cost Controller):</strong> <em>Stance: Khắt khe / Hoài nghi</em>. Chuyên soi sai lệch ngân sách; nghi ngờ tính minh bạch của thuật toán AI.</p>
+        </div>
+        <div class="card" style="border-top: 2.5px solid #16a34a;">
+          <div class="card-header">
+            <span style="color: #15803d;">CHAMPION / ỦNG HỘ CHỦ CHỐT</span>
+            <span class="badge badge-green">Influence Cao × Quyết tâm CĐS</span>
+          </div>
+          <p><strong>• Ông Trần Đình Đông (Chủ tịch / Tổng Giám đốc — Chủ nhà thầu):</strong> <em>Stance: Ủng hộ mạnh mẽ / Quyết liệt</em>. Cần quản lý tổng quan 15+ dự án, tối ưu chi phí mua sơn và tăng tốc độ đấu thầu.</p>
+          <p><strong>• Kỹ sư Lê Hoàng Nam (Kỹ sư Dự toán trẻ — Lotus Tower):</strong> <em>Stance: Hào hứng</em>. Đam mê công nghệ, muốn tự động hóa để chấm dứt tình trạng overtime đo từng nét vẽ.</p>
+        </div>
+        <div class="card" style="border-top: 2.5px solid #64748b;">
+          <div class="card-header">
+            <span style="color: #475569;">BYSTANDER / THEO DÕI</span>
+            <span class="badge badge-blue">Influence Thấp × Interest Thấp</span>
+          </div>
+          <p><strong>• Kỹ sư Vũ Đức Trọng (Kỹ sư Hiện trường & MEP — Horizon Park):</strong> <em>Stance: Trung lập / Thận trọng</em>. Chỉ quan tâm kiểm tra xung đột giữa tường sơn và hộp kỹ thuật MEP.</p>
+        </div>
+        <div class="card" style="border-top: 2.5px solid #2563eb;">
+          <div class="card-header">
+            <span style="color: #1d4ed8;">SUPPORTER / KHAI THÁC FEEDBACK</span>
+            <span class="badge badge-purple">Influence Vừa × Hưởng lợi trực tiếp</span>
+          </div>
+          <p><strong>• Kỹ sư Phạm Minh Tuấn (Kỹ sư Dự toán trưởng / QS Lead):</strong> <em>Stance: Ủng hộ có điều kiện</em>. Muốn giảm tải nhập tay 500 phòng nhưng đòi hỏi giao diện kiểm soát HITL tuyệt đối.</p>
+          <p><strong>• Kỹ sư Nguyễn Thị Mai (Kỹ sư Đấu thầu gấp):</strong> <em>Stance: Ủng hộ nhiệt tình</em>. Chịu áp lực deadline 48h nộp thầu; rất cần xuất nhanh bảng BOQ sơ bộ.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bảng Stakeholder -->
+    <div>
+      <div class="section-title">
+        <span>2. DANH SÁCH 7 STAKEHOLDER THỰC TẾ (1 CHỦ NHÀ THẦU + 6 KỸ SƯ DỰ TOÁN)</span>
+        <span class="badge badge-green">7 Cụ thể · Đạt chuẩn Gate 1</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">Stakeholder cụ thể</th>
+            <th style="width: 13%;">Quadrant gợi ý</th>
+            <th style="width: 17%;">Stance thực tế</th>
+            <th style="width: 45%;">Lý do Stance thực tế & Trọng tâm nghiệp vụ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Trần Đình Đông</strong> (Chủ nhà thầu / TGĐ)</td>
+            <td>Champion</td>
+            <td><span class="badge badge-green">Ủng hộ quyết liệt</span></td>
+            <td>Nắm tổng quan danh mục dự án; muốn giảm 50% chi phí lập hồ sơ thầu và chống thất thoát vật tư.</td>
+          </tr>
+          <tr>
+            <td><strong>Phạm Minh Tuấn</strong> (Kỹ sư QS Lead)</td>
+            <td>Supporter</td>
+            <td><span class="badge badge-amber">Ủng hộ có điều kiện</span></td>
+            <td>Phụ trách thẩm định định mức; chỉ tin dùng nếu hệ thống cho phép sửa tay (HITL) từng phòng.</td>
+          </tr>
+          <tr>
+            <td><strong>Đỗ Thị Hương</strong> (Kỹ sư QS thâm niên)</td>
+            <td>Blocker</td>
+            <td><span class="badge badge-red">Nghi ngại / E ngại</span></td>
+            <td>Thói quen bóc tay AutoCAD 10 năm; lo ngại AI nhận diện sai hoặc làm giảm vai trò của kỹ sư.</td>
+          </tr>
+          <tr>
+            <td><strong>Lê Hoàng Nam</strong> (Kỹ sư QS trẻ)</td>
+            <td>Champion</td>
+            <td><span class="badge badge-green">Hào hứng / Đón nhận</span></td>
+            <td>Thành thạo công nghệ; mong muốn AI giải phóng khỏi việc đo chu vi tường thủ công lặp lại.</td>
+          </tr>
+          <tr>
+            <td><strong>Vũ Đức Trọng</strong> (Kỹ sư MEP/Hiện trường)</td>
+            <td>Bystander</td>
+            <td><span class="badge badge-blue">Trung lập</span></td>
+            <td>Chỉ quan tâm diện tích trừ dầm giật cấp và lỗ mở kỹ thuật; quan sát kết quả từ xa.</td>
+          </tr>
+          <tr>
+            <td><strong>Nguyễn Thị Mai</strong> (Kỹ sư Đấu thầu gấp)</td>
+            <td>Supporter</td>
+            <td><span class="badge badge-green">Ủng hộ mạnh mẽ</span></td>
+            <td>Luôn bị áp lực nộp hồ sơ thầu trong 48h; cần bóc tách nhanh sơ bộ để chốt giá chào thầu.</td>
+          </tr>
+          <tr>
+            <td><strong>Trần Quốc Bảo</strong> (Kiểm soát chi phí)</td>
+            <td>Blocker</td>
+            <td><span class="badge badge-red">Khắt khe / Soi xét</span></td>
+            <td>Chịu trách nhiệm kiểm toán ngân sách; yêu cầu mỗi ô tính phải có Deep Link trỏ về nét vẽ CAD.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4 Chiến lược ưu tiên -->
+    <div>
+      <div class="section-title">
+        <span>3. BỐN STAKEHOLDER ƯU TIÊN & CHIẾN LƯỢC HÀNH ĐỘNG TRONG 1–2 TUẦN TỚI</span>
+        <span class="badge badge-amber">2 Tận dụng + 2 Thuyết phục</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <strong>1. Trần Đình Đông (Champion — Chủ nhà thầu)</strong>
+            <span class="badge badge-green">Tận dụng quyền lực</span>
+          </div>
+          <p><strong>• Quan tâm:</strong> Dashboard tổng quan 15+ dự án, ROI phần mềm, tiến độ đấu thầu và giảm thiểu rủi ro bù lỗ vật tư sơn.</p>
+          <p><strong>• Đóng góp / Rủi ro:</strong> Người ký duyệt ngân sách áp dụng toàn công ty; nếu thiếu cam kết thì pilot bị bỏ dở.</p>
+          <div class="highlight-box">
+            <strong>Hành động cụ thể:</strong> Trình bày demo Dashboard quản lý đa dự án trước 16h thứ Năm; đề xuất ban hành quyết định cho phép thí điểm Shadow Run trên 6 kỹ sư trong 3 tuần.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <strong>2. Nguyễn Thị Mai (Supporter — Kỹ sư Đấu thầu)</strong>
+            <span class="badge badge-green">Tận dụng nhu cầu gấp</span>
+          </div>
+          <p><strong>• Quan tâm:</strong> Xuất bảng BOQ dự toán sơn trong 1 giờ để kịp nộp gói thầu gấp; tự động tính đơn giá sơn lót và phủ.</p>
+          <p><strong>• Đóng góp / Rủi ro:</strong> Người dùng kiểm chứng tốc độ thực tế; nếu phần mềm chậm thì Mai sẽ quay lại bóc tay.</p>
+          <div class="highlight-box">
+            <strong>Hành động cụ thể:</strong> Cài đặt tài khoản thử nghiệm trước thứ Ba; cùng Mai chạy bóc tách thử 1 gói thầu gấp vào thứ Tư để kiểm tra tính năng xuất Excel tự động.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <strong>3. Đỗ Thị Hương (Blocker — Kỹ sư QS thâm niên)</strong>
+            <span class="badge badge-red">Hóa giải e ngại tâm lý</span>
+          </div>
+          <p><strong>• Quan tâm:</strong> An toàn nghề nghiệp, không bị AI làm sai quy chuẩn, giữ quyền kiểm duyệt và điều chỉnh ranh giới phòng.</p>
+          <p><strong>• Đóng góp / Rủi ro:</strong> Có tiếng nói uy tín trong phòng; nếu Hương phản đối thì các kỹ sư khác sẽ ngại dùng.</p>
+          <div class="alert-box">
+            <strong>Hành động cụ thể:</strong> Ngồi làm việc trực tiếp 1-1 với Hương sáng thứ Sáu; hướng dẫn công cụ kéo chỉnh polygon thủ công trên canvas để chứng minh AI chỉ là trợ lý đắc lực cho chị.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <strong>4. Trần Quốc Bảo (Blocker — Kỹ sư Kiểm soát chi phí)</strong>
+            <span class="badge badge-red">Minh bạch thuật toán</span>
+          </div>
+          <p><strong>• Quan tâm:</strong> Tính kiểm toán (Auditability), đối soát từng m² sơn với nét vẽ CAD gốc, không chấp nhận số liệu mập mờ.</p>
+          <p><strong>• Đóng góp / Rủi ro:</strong> Có quyền bác bỏ bảng dự toán; yêu cầu giải trình chi tiết từng công thức.</p>
+          <div class="alert-box">
+            <strong>Hành động cụ thể:</strong> Trình diễn tính năng "Deep Link Audit Trail" (click ô Excel nhảy tới bản vẽ) và cung cấp báo cáo so sánh sai số ≤ 1.4% trên bản vẽ Sky Garden vào thứ Hai.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Gate 1: Stakeholder Map & Actionable Strategy — ĐẠT CHUẨN</span>
+    <span>Track 1 - Day 25 AI Team Lab · Nhóm H3201</span>
+  </div>
+</div>
+
+<!-- ==================== TRANG 2 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-title-box">
+      <h1>Trang 2 — Pitch "Kết Luận Trước" & RACI Matrix</h1>
+      <div class="sub">Track 1 · Day 25 — AI Team Lab | Dự án: ENGENIX (P-059) | Live App: <a href="https://c4-app-059.vercel.app/" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">https://c4-app-059.vercel.app/</a></div>
+    </div>
+    <div class="header-meta">
+      <strong>Nhóm: H3201</strong> (4 thành viên)<br>
+      Trang <strong>2 / 4</strong>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Pitch Conclusion First -->
+    <div>
+      <div class="section-title">
+        <span>1. PITCH "CONCLUSION FIRST" (GỬI ÔNG TRẦN ĐÌNH ĐÔNG — CHỦ NHÀ THẦU / TỔNG GIÁM ĐỐC)</span>
+        <span class="badge badge-blue">Tối đa 0.5 trang · Thuyết phục lãnh đạo</span>
+      </div>
+      <div class="card" style="background: #f8fafc; border-left: 3.5px solid #2563eb;">
+        <p><strong>KẾT LUẬN / ĐỀ XUẤT:</strong> Nhóm H3201 đề xuất Tổng Giám đốc phê duyệt triển khai <strong>Thử nghiệm chạy song song có kiểm soát (Shadow Run 3 tuần)</strong> nền tảng <strong>ENGENIX</strong> cho <strong>đội ngũ 6 kỹ sư dự toán</strong> trên 2 công trình trọng điểm (Sky Garden & Lotus Tower) từ ngày 01/11, nhằm số hóa quy trình bóc tách và tạo dashboard quản trị tổng thể danh mục dự án cho Ban Lãnh đạo mà không phát sinh bất kỳ rủi ro nào về tiến độ đấu thầu.</p>
+        <p style="margin-top: 2.5px;"><strong>LÝ DO CỐT LÕI:</strong></p>
+        <ul>
+          <li><strong>Cắt giảm 80% thời gian bóc tách của 6 kỹ sư:</strong> Rút ngắn thời gian đo bóc từ 24 giờ xuống dưới 3 giờ/tầng điển hình; giải phóng 120 giờ làm việc thủ công mỗi tuần của đội ngũ kỹ sư để tập trung tối ưu giá thầu.</li>
+          <li><strong>Minh bạch hóa dòng tiền & Loại bỏ rủi ro thất thoát vật tư sơn:</strong> Cung cấp Dashboard tổng quan theo dõi khối lượng theo thời gian thực; tự động trừ chính xác 100% diện tích cửa theo TCVN 4453:1995, ngăn chặn nguy cơ mua thừa/thiếu 5–7% vật tư sơn hoàn thiện.</li>
+        </ul>
+        <p style="margin-top: 2.5px;"><strong>BẰNG CHỨNG & SỐ LIỆU THỰC TẾ:</strong></p>
+        <ul>
+          <li><strong>Độ chính xác kiểm chứng:</strong> Thử nghiệm trên bản vẽ mặt bằng tầng 3 Sky Garden đạt độ chính xác hình học <strong>97.2%</strong>; sai số tổng diện tích sơn bóc tách chỉ lệch <strong>1.4%</strong> so với bóc tay của kỹ sư bậc 5; 100% số liệu đều có audit trail trỏ về đúng polygon CAD.</li>
+          <li><strong>Sự đón nhận của kỹ sư:</strong> Kỹ sư trẻ Nam và kỹ sư Mai hào hứng thử nghiệm vì giảm tải cháy deadline; Kỹ sư trưởng Tuấn đồng thuận cơ chế kiểm soát Human-in-the-loop.</li>
+        </ul>
+        <p style="margin-top: 2.5px;"><strong>SMALL ASK (ĐỀ NGHỊ HÀNH ĐỘNG NHỎ TIẾP THEO):</strong> Tổng Giám đốc cho phép nhóm tổ chức 1 buổi workshop 45 phút vào chiều thứ Sáu tuần này để cài đặt thử nghiệm, chạy thử Live Web App (<a href="https://c4-app-059.vercel.app/" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 600;">c4-app-059.vercel.app</a>) trên 1 mặt bằng mẫu cùng 6 kỹ sư dự toán.</p>
+      </div>
+    </div>
+
+    <!-- Phản biện & Cách xử lý -->
+    <div>
+      <div class="section-title">
+        <span>2. PHẢN BIỆN CHÍ MẠNG TỪ BAN ĐIỀU HÀNH & CÁCH XỬ LÝ BẰNG CHỨNG</span>
+        <span class="badge badge-red">Rào cản áp dụng thực tế</span>
+      </div>
+      <div class="grid-2">
+        <div class="alert-box">
+          <strong style="color: #991b1b;">PHẢN BIỆN CỐT TỬ CỦA CHỦ NHÀ THẦU & KỸ SƯ KIỂM SOÁT CHI PHÍ:</strong>
+          <p style="margin-top: 2px;"><em>"Bản vẽ CAD thực tế của các đơn vị thiết kế gửi sang rất lộn xộn, nhiều nét hở và layer rác. Nếu AI nhận diện sai gây thiếu hụt khối lượng làm nhà thầu đền hợp đồng, hoặc nếu 6 kỹ sư phản đối không chịu dùng thì khoản đầu tư phần mềm này sẽ hoàn toàn lãng phí!"</em></p>
+        </div>
+        <div class="success-box">
+          <strong style="color: #166534;">CÂU TRẢ LỜI DỰA TRÊN BẰNG CHỨNG & HÀNH ĐỘNG GIẢM RỦI RO:</strong>
+          <p style="margin-top: 2px;"><strong>1. Xử lý bản vẽ rác:</strong> Giải thuật Shapely tự động lọc sạch 100% layer chú thích/nội thất và tự vá khe hở nét vẽ tường lên tới 50mm; AI Verification Center cảnh báo 31+ lỗi hình học.</p>
+          <p><strong>2. Nguyên tắc Human-in-the-loop:</strong> AI không tự chốt số; kỹ sư dự toán có toàn quyền sửa tay trên màn hình và bấm duyệt từng phòng thì số liệu mới ghi vào BOQ chính thức.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bản viết lại cá nhân -->
+    <div>
+      <div class="section-title">
+        <span>3. KIỂM SOÁT THẤU HIỂU NỘI BỘ — BẢN VIẾT LẠI PITCH CỦA 4 THÀNH VIÊN</span>
+        <span class="badge badge-purple">Cá nhân -> Team</span>
+      </div>
+      <div class="grid-4" style="font-size: 7.1pt;">
+        <div class="card">
+          <strong>Tô Anh Đức (PM):</strong>
+          <p><em>"Xin chạy Shadow Run 3 tuần để chứng minh ENGENIX giúp Chủ nhà thầu nắm trọn 15 dự án và giúp 6 kỹ sư tăng tốc độ bóc tách gấp 5 lần."</em></p>
+        </div>
+        <div class="card">
+          <strong>Chử T. P. Nam (Tech):</strong>
+          <p><em>"Thuật toán Shapely tự động snap nét hở 50mm, lọc sạch layer rác; sai số khối lượng kiểm soát chặt chẽ ở mức 1.4% so với kỹ sư bóc tay."</em></p>
+        </div>
+        <div class="card">
+          <strong>Phùng G. Khánh (Eval):</strong>
+          <p><em>"Bộ kiểm thử Golden CAD Suite 20 bản vẽ đảm bảo không có lỗi hình học lọt lưới; AI Verification Center giúp kỹ sư phát hiện 100% phòng nghi ngờ."</em></p>
+        </div>
+        <div class="card">
+          <strong>Phan D. Thành (Ops):</strong>
+          <p><em>"Hệ thống vận hành an toàn trong mạng nội bộ, bảo mật tuyệt đối tài sản bản vẽ kiến trúc của nhà thầu; hỗ trợ 1-1 cho từng kỹ sư."</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RACI Matrix -->
+    <div>
+      <div class="section-title">
+        <span>4. MA TRẬN RACI — 6 CÔNG VIỆC TRỌNG YẾU (QUY TẮC: DUY NHẤT 1 ACCOUNTABLE / HÀNG)</span>
+        <span class="badge badge-green">R - A - C - I Phân định rạch ròi</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 32%;">Công việc trọng yếu (1–2 tháng tới)</th>
+            <th style="width: 11%; text-align: center;">Tô Anh Đức<br>(PM)</th>
+            <th style="width: 14%; text-align: center;">Chử T. P. Nam<br>(Tech Lead)</th>
+            <th style="width: 12%; text-align: center;">Phùng G. Khánh<br>(Eval Lead)</th>
+            <th style="width: 11%; text-align: center;">Phan D. Thành<br>(Product Ops)</th>
+            <th style="width: 10%; text-align: center;">Đội 6 Kỹ sư<br>(Đại diện Tuấn)</th>
+            <th style="width: 10%; text-align: center;">Trần Đ. Đông<br>(Chủ thầu)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Khảo sát luồng làm việc & Quy chuẩn TCVN của 6 kỹ sư</strong></td>
+            <td style="text-align: center;"><strong style="color: #2563eb;">A</strong></td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">I</td>
+          </tr>
+          <tr>
+            <td><strong>2. Phát triển Thuật toán Bóc tách CAD & Dashboard Dự án</strong></td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;"><strong style="color: #2563eb;">A</strong> / R</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">I</td>
+            <td style="text-align: center;">I</td>
+          </tr>
+          <tr>
+            <td><strong>3. Xây dựng Bộ Golden CAD Benchmark (20 bản vẽ công ty)</strong></td>
+            <td style="text-align: center;">I</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;"><strong style="color: #2563eb;">A</strong></td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">I</td>
+          </tr>
+          <tr>
+            <td><strong>4. Kiểm thử Sai số Khối lượng & Đào tạo 6 Kỹ sư sử dụng</strong></td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;"><strong style="color: #2563eb;">A</strong></td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">I</td>
+          </tr>
+          <tr>
+            <td><strong>5. Triển khai Thử nghiệm Shadow Run trên 2 dự án trọng điểm</strong></td>
+            <td style="text-align: center;"><strong style="color: #2563eb;">A</strong></td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">I</td>
+          </tr>
+          <tr>
+            <td><strong>6. Quyết định Áp dụng Toàn Doanh nghiệp & Ký Hợp đồng</strong></td>
+            <td style="text-align: center;">R</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;">I</td>
+            <td style="text-align: center;">C</td>
+            <td style="text-align: center;"><strong style="color: #dc2626;">A</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="font-size: 6.6pt; color: #64748b; margin-top: 1.5px;">
+        * Chú thích: <strong>A (Accountable)</strong>: 1 người duy nhất chịu trách nhiệm cuối; <strong>R (Responsible)</strong>: Người trực tiếp thực hiện; <strong>C (Consulted)</strong>: Hỏi ý kiến; <strong>I (Informed)</strong>: Nhận thông báo kết quả.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Gate 2: Conclusion-First Pitch & Clear RACI — ĐẠT CHUẨN</span>
+    <span>Track 1 - Day 25 AI Team Lab · Nhóm H3201</span>
+  </div>
+</div>
+
+<!-- ==================== TRANG 3 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-title-box">
+      <h1>Trang 3 — Thiết Kế Cấu Trúc AI Team</h1>
+      <div class="sub">Track 1 · Day 25 — AI Team Lab | Dự án: ENGENIX (P-059) | Live App: <a href="https://c4-app-059.vercel.app/" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">https://c4-app-059.vercel.app/</a></div>
+    </div>
+    <div class="header-meta">
+      <strong>Nhóm: H3201</strong> (4 thành viên)<br>
+      Trang <strong>3 / 4</strong>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Architecture Selection -->
+    <div>
+      <div class="section-title">
+        <span>1. LỰA CHỌN CẤU TRÚC AI TEAM (AI TEAM ARCHITECTURE)</span>
+        <span class="badge badge-green">Mô hình đã chọn: EMBEDDED</span>
+      </div>
+      <div class="grid-2">
+        <div class="card" style="border-left: 3px solid #22c55e;">
+          <strong>LỰA CHỌN: EMBEDDED AI TEAM (MÔ HÌNH NHÚNG)</strong>
+          <p style="margin-top: 2px;">Toàn bộ kỹ sư AI nhúng trực tiếp bên trong feature squad sản phẩm cùng PM và làm việc sát sườn với 6 kỹ sư dự toán của nhà thầu, trực tiếp giải quyết các bản vẽ dị biệt ngay trong từng sprint 2 tuần.</p>
+        </div>
+        <div class="highlight-box">
+          <strong>LÝ DO PHÙ HỢP QUY MÔ & GIAI ĐOẠN HIỆN TẠI (1–3 THÁNG TỚI):</strong>
+          <p style="margin-top: 2px;">Nhóm 4 người đang phát triển giải pháp B2B ngách cho nhà thầu xây dựng. Mô hình Embedded giúp kỹ sư AI nhận phản hồi trực tiếp từ 6 kỹ sư hiện trường hàng ngày, tinh chỉnh thuật toán snap và sửa prompt trong <strong>vòng lặp dưới 24 giờ</strong>, tránh sự cồng kềnh quan liêu của Centralized hay Hybrid.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Roles vs Extended Roles -->
+    <div>
+      <div class="section-title">
+        <span>2. PHÂN ĐỊNH VAI TRÒ CỐT LÕI (CORE ROLES) VS VAI TRÒ MỞ RỘNG (EXTENDED ROLES)</span>
+        <span class="badge badge-blue">Tinh gọn thực tế</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span style="color: #1e40af;">CORE ROLES — CẦN NGAY GIAI ĐOẠN HIỆN TẠI</span>
+            <span class="badge badge-blue">4 Thành viên đảm nhiệm</span>
+          </div>
+          <ul>
+            <li><strong>AI Product Manager (Tô Anh Đức):</strong> Làm việc với Chủ nhà thầu & đội 6 kỹ sư, quản lý backlog tính năng, thiết kế giao diện dashboard tổng quan dự án.</li>
+            <li><strong>AI & CAD Geometry Tech Lead (Chử Trần Phương Nam):</strong> Phát triển thuật toán bóc tách hình học (ezdxf, Shapely), backend FastAPI, tích hợp LangGraph Copilot.</li>
+            <li><strong>AI Evaluation & Takeoff Quality Lead (Phùng Gia Khánh):</strong> Xây dựng bộ Golden CAD Suite 20 bản vẽ, đo lường sai số hình học, thiết lập quy trình kiểm thử tự động.</li>
+            <li><strong>Product Ops & CAD Pipeline Specialist (Phan Duy Thành):</strong> Chuẩn hóa dữ liệu DXF/DWG của nhà thầu, hướng dẫn và hỗ trợ kỹ thuật trực tiếp cho 6 kỹ sư.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span style="color: #475569;">EXTENDED ROLES — BỔ SUNG KHI SCALE TOÀN DOANH NGHIỆP</span>
+            <span class="badge badge-purple">Giai đoạn mở rộng</span>
+          </div>
+          <ul>
+            <li><strong>Senior BIM / Revit Integration Engineer:</strong> Phát triển connector đồng bộ mô hình Revit 3D và xuất file IFC theo chuẩn OpenBIM quốc tế.</li>
+            <li><strong>Distributed Geometry Computing Specialist:</strong> Tối ưu hóa xử lý song song trên cụm server khi bóc tách đồng thời 50 tầng của đại dự án.</li>
+            <li><strong>AEC Construction Law & Procurement Specialist:</strong> Kiểm soát tính pháp lý hợp đồng và định mức dự toán xây dựng nhà nước (Thông tư 12/2021/TT-BXD).</li>
+            <li><strong>Enterprise Solution Architect:</strong> Triển khai giải pháp On-Premise kết nối hệ thống ERP xây dựng của nhà thầu (SAP / Odoo / Fast).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Priority Resourcing -->
+    <div>
+      <div class="section-title">
+        <span>3. PRIORITY RESOURCING — CÁCH BỔ SUNG NĂNG LỰC CÒN THIẾU (HIRE / OUTSOURCE / PARTNER)</span>
+        <span class="badge badge-amber">Giải pháp thực tế không lãng phí</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%;">Capability Gap (Năng lực còn thiếu)</th>
+            <th style="width: 15%;">Phương án chọn</th>
+            <th style="width: 45%;">Lý do lựa chọn (Tự phản biện ưu / nhược điểm)</th>
+            <th style="width: 18%;">Thời điểm cần</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Kiến thức Định mức Xây dựng & Nghiệp vụ Bóc tách</strong></td>
+            <td><span class="badge badge-green">PARTNER</span><br>(Hợp tác)</td>
+            <td><strong>Không HIRE:</strong> Tuyển Kỹ sư QS Senior tốn 25–35 triệu/tháng và dư thừa ở giai đoạn MVP.<br><strong>Chọn PARTNER:</strong> Hợp tác cố vấn chuyên môn với Kỹ sư QS trưởng Phạm Minh Tuấn — chi phí 0đ, độ sát thực hiện trường 100%.</td>
+            <td><strong>Cần ngay Tuần 1:</strong> Trước khi chốt công thức trừ cửa và hệ số hao hụt.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Hệ thống Đo lường Sai số Bóc tách CAD Tự động</strong></td>
+            <td><span class="badge badge-blue">INTERNAL UPSKILLING</span><br>+ Tooling</td>
+            <td><strong>Không OUTSOURCE:</strong> Rủi ro lộ dữ liệu bản vẽ bí mật và không tự chủ được core IP.<br><strong>Chọn TỰ NÂNG CẤP:</strong> Nâng cấp Phùng Gia Khánh từ L1 lên L2 xây dựng bộ test suite tự động so khớp polygon CAD — tích lũy năng lực cốt lõi cho team.</td>
+            <td><strong>Cần hoàn thành Tuần 2:</strong> Trước khi chạy kiểm thử Shadow Run pilot.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Bộ chuyển đổi DWG sang DXF công nghiệp hiệu năng cao</strong></td>
+            <td><span class="badge badge-purple">OUTSOURCE / TOOLING</span><br>(SDK có sẵn)</td>
+            <td><strong>Không TỰ CODE:</strong> Viết parser DWG nhị phân tốn hàng năm kỹ thuật.<br><strong>Chọn TOOLING SDK:</strong> Tích hợp ODA File Converter của Open Design Alliance kết hợp Xvfb headless container — ổn định tuyệt đối, chi phí giấy phép cực rẻ.</td>
+            <td><strong>Cần ở Tuần 3:</strong> Khi tiếp nhận bản vẽ DWG gốc từ nhà thầu.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Squad Goal -->
+    <div>
+      <div class="section-title">
+        <span>4. TUYÊN BỐ MỤC TIÊU SQUAD (SQUAD GOAL)</span>
+        <span class="badge badge-blue">Chuẩn mẫu câu đề bài</span>
+      </div>
+      <div class="highlight-box" style="font-size: 8pt; text-align: center; padding: 6px 10px; border-left: 3.5px solid #2563eb;">
+        "Team H3201 của chúng tôi sở hữu <strong>module AI CAD Extraction & Paint Estimator (ENGENIX)</strong> và chịu trách nhiệm đưa <strong>thời gian bóc tách dự toán sơn của đội ngũ 6 kỹ sư từ 24 giờ xuống dưới 4 giờ/tầng</strong> với <strong>sai số khối lượng bóc tách ≤ ±3%</strong> và <strong>tỷ lệ phát hiện lỗi bản vẽ ≥ 95%</strong> trong vòng <strong>60 ngày tới</strong>."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Gate 3: Realistic AI Team Design & Resourcing Strategy — ĐẠT CHUẨN</span>
+    <span>Track 1 - Day 25 AI Team Lab · Nhóm H3201</span>
+  </div>
+</div>
+
+<!-- ==================== TRANG 4 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-title-box">
+      <h1>Trang 4 — Team Health & Growth Plan 30 Ngày</h1>
+      <div class="sub">Track 1 · Day 25 — AI Team Lab | Dự án: ENGENIX (P-059) | Live App: <a href="https://c4-app-059.vercel.app/" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">https://c4-app-059.vercel.app/</a></div>
+    </div>
+    <div class="header-meta">
+      <strong>Nhóm: H3201</strong> (4 thành viên)<br>
+      Trang <strong>4 / 4</strong>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Team Health Scorecard -->
+    <div>
+      <div class="section-title">
+        <span>1. ĐÁNH GIÁ SỨC KHỎE TEAM (TEAM HEALTH SCORECARD — THANG ĐIỂM 1–5)</span>
+        <span class="badge badge-blue">Tự chấm kín -> Đối chiếu</span>
+      </div>
+      <table style="text-align: center;">
+        <thead>
+          <tr>
+            <th style="width: 28%; text-align: left;">Khía cạnh sức khỏe team</th>
+            <th style="width: 14%;">Tô Anh Đức<br>(PM)</th>
+            <th style="width: 16%;">Chử T. P. Nam<br>(Tech Lead)</th>
+            <th style="width: 14%;">Phùng G. Khánh<br>(Eval Lead)</th>
+            <th style="width: 14%;">Phan D. Thành<br>(Ops Lead)</th>
+            <th style="width: 14%;">Điểm TB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: left;"><strong>1. Chất lượng AI</strong> (độ chính xác hình học, ít lỗi)</td>
+            <td>3.5</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>3.5</td>
+            <td><strong style="color: #b45309;">3.13 / 5</strong></td>
+          </tr>
+          <tr>
+            <td style="text-align: left;"><strong>2. Tiến độ</strong> (cam kết đúng hạn các mốc sprint)</td>
+            <td>4.0</td>
+            <td>4.0</td>
+            <td>4.5</td>
+            <td>4.5</td>
+            <td><strong style="color: #15803d;">4.25 / 5</strong></td>
+          </tr>
+          <tr>
+            <td style="text-align: left;"><strong>3. Tinh thần team</strong> (phối hợp, dám nói khó khăn)</td>
+            <td>5.0</td>
+            <td>4.5</td>
+            <td>4.5</td>
+            <td>4.5</td>
+            <td><strong style="color: #15803d;">4.63 / 5</strong></td>
+          </tr>
+          <tr>
+            <td style="text-align: left;"><strong>4. Tốc độ ra sản phẩm</strong> (thời gian đưa ra bản test)</td>
+            <td>3.0</td>
+            <td>3.0</td>
+            <td>3.0</td>
+            <td>4.0</td>
+            <td><strong style="color: #b45309;">3.25 / 5</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="grid-2" style="margin-top: 3.5px;">
+        <div class="alert-box">
+          <strong>• Khía cạnh thấp nhất: Chất lượng AI (3.13) & Tốc độ ra sản phẩm (3.25)</strong><br>
+          Team gặp khó khăn khi xử lý các bản vẽ CAD có nét vẽ hở hoặc layer lạ; việc kiểm thử sai số thủ công bằng mắt tốn quá nhiều thời gian gây chậm trễ release.
+        </div>
+        <div class="highlight-box">
+          <strong>• Điểm chênh lệch nhiều nhất: Tốc độ ra sản phẩm (Gia Khánh 3.0 vs Duy Thành 4.0 — lệch 1.0)</strong><br>
+          Duy Thành nhìn từ góc độ chuẩn bị file dữ liệu và UI (nhanh); trong khi Gia Khánh và Phương Nam bị nghẽn ở khâu xác thực độ chính xác thuật toán hình học (rất chậm).
+        </div>
+      </div>
+    </div>
+
+    <!-- Vấn đề cốt tử & Competency -->
+    <div>
+      <div class="section-title">
+        <span>2. VẤN ĐỀ CỐT TỬ & KHUNG NĂNG LỰC CẦN NÂNG CẤP (COMPETENCY UPGRADE)</span>
+        <span class="badge badge-purple">Tập trung giải quyết gốc rễ</span>
+      </div>
+      <div class="grid-2">
+        <div class="card" style="border-left: 3px solid #dc2626;">
+          <strong>VẤN ĐỀ CỐT TỬ CẢN TRỞ MILESTONE TIẾP THEO:</strong>
+          <p style="margin-top: 2px;"><em>"Team chưa có bộ kiểm thử tự động đo sai số hình học bóc tách CAD (Golden CAD Test Suite). Mỗi lần cập nhật thuật toán snap hoặc prompt phân loại phòng, nhóm phải mở AutoCAD đo tay từng phòng để đối chiếu, gây nghẽn toàn bộ tốc độ ra tính năng."</em></p>
+        </div>
+        <div class="card" style="border-left: 3px solid #7c3aed;">
+          <strong>NÂNG CẤP NĂNG LỰC THEO KHUNG L1/L2/L3:</strong>
+          <p><strong>• Vai trò:</strong> AI Evaluation & Takeoff Quality Lead (<strong>Phùng Gia Khánh</strong>).</p>
+          <p><strong>• Mức hiện tại:</strong> <strong>L1 — AI Literate</strong> (Hiểu prompt, đo kiểm thử thủ công bằng mắt).</p>
+          <p><strong>• Mức mục tiêu:</strong> <strong>L2 — AI Practitioner</strong> (Xây dựng pipeline kiểm thử tự động).</p>
+          <p><strong>• Năng lực nâng:</strong> <em>Automated CAD Geometry Evals & Quantity Takeoff Benchmarking</em>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Growth Plan 30 ngày -->
+    <div>
+      <div class="section-title">
+        <span>3. KẾ HOẠCH PHÁT TRIỂN 30 NGÀY (GROWTH PLAN — TỐI ĐA 3 HÀNH ĐỘNG CỤ THỂ)</span>
+        <span class="badge badge-green">Owner · Deadline · Dấu hiệu hoàn thành rõ ràng</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%;">Vấn đề ưu tiên</th>
+            <th style="width: 33%;">Hành động cụ thể trong 30 ngày</th>
+            <th style="width: 15%;">Owner<br>(Phụ trách)</th>
+            <th style="width: 12%;">Deadline<br>(Hạn chót)</th>
+            <th style="width: 18%;">Dấu hiệu hoàn thành<br>(Pass Signal đo được)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Sai số CAD chưa đo tự động</strong><br><span class="badge badge-red">Nút thắt cốt tử</span></td>
+            <td>Xây dựng bộ Golden CAD Test Suite gồm 20 mặt bằng thực tế (Sky Garden & Lotus Tower) và viết script tự động so khớp diện tích tường/trần bóc tách với ground truth.</td>
+            <td><strong>Phùng Gia Khánh</strong><br>(Eval Lead)</td>
+            <td><strong>Ngày thứ 14</strong><br>(27/10/2026)</td>
+            <td>Có thư mục <span class="code-font">eval/golden_cad_20/</span> và script <span class="code-font">run_cad_eval.py</span> xuất báo cáo tự động với sai số khối lượng ≤ ±3%.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Thuật toán nét hở gây cảnh báo giả</strong><br><span class="badge badge-amber">Nghẽn giải thuật</span></td>
+            <td>Phát triển module Auto-snap Geometry nâng cao, tự động nhận diện và vá các khe hở nét vẽ tường ≤ 50mm, giảm 80% cảnh báo giả cho kỹ sư kiểm định.</td>
+            <td><strong>Chử T. P. Nam</strong><br>(Tech Lead)</td>
+            <td><strong>Ngày thứ 21</strong><br>(03/11/2026)</td>
+            <td>Unit tests trong <span class="code-font">tests/test_geometry.py</span> đạt 100% pass trên 15 trường hợp bản vẽ nét hở điển hình; tỷ lệ nhận diện phòng thành công ≥ 95%.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Lệch nhịp giữa AI và Đội ngũ 6 Kỹ sư</strong><br><span class="badge badge-blue">Giao tiếp người dùng</span></td>
+            <td>Tổ chức phiên làm việc định kỳ <strong>"Thứ Sáu cùng Đội ngũ Kỹ sư Dự toán"</strong> (30 phút lúc 16h30 thứ Sáu) với Kỹ sư Tuấn và 5 kỹ sư để đối chiếu kết quả bóc tách thực tế.</td>
+            <td><strong>Tô Anh Đức</strong><br>(Product Lead)</td>
+            <td><strong>Hàng tuần</strong><br>(Bắt đầu 17/10)</td>
+            <td>Có nhật ký đối soát (Takeoff Audit Log) lưu trong repo ghi nhận tối thiểu 3 điều chỉnh công thức/định mức cho sprint tiếp theo sau mỗi buổi họp.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Gate 4 Check note -->
+    <div class="success-box" style="margin-top: 2px;">
+      <strong>CAM KẾT THỰC THI:</strong> Kế hoạch 30 ngày tập trung giải quyết dứt điểm rào cản kỹ thuật lớn nhất về sai số hình học và xây dựng niềm tin với đội ngũ 6 kỹ sư dự toán hiện trường, đảm bảo sẵn sàng cho đợt Shadow Run thành công tại dự án Chung cư Sky Garden.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Gate 4: Measurable 30-Day Growth Plan — ĐẠT CHUẨN</span>
+    <span>Track 1 - Day 25 AI Team Lab · Nhóm H3201</span>
+  </div>
+</div>
+
+</body>
+</html>
